@@ -1,18 +1,28 @@
 #왜 크롤링을 배워야 하는가?
 # 내가 원하는 데이터가 알맞게 찾아지지 않으므로 내가 데이터를 수집해야 하는 일이 발생할 수 있다.
 
-#jupiter notebook 사용
+#웹 크롤링 관련 파이썬 패키지들
+# 기본 패키지 urllib
+# requests 주로 정적 페이지를 크롤링 할 때 이용한다
+# selenium  주로 동적 페이지를 크롤링할 때 이용한다. Chromedriver와 함께 이용
+# BeautifulSoup 파싱(html문서를 분류, 정리하여 다루기 쉽게 바꾸는 작업)을 할 때 사용한다.
+
+#정적 페이지에서는 대체로 find함수 사용 find('태그',{'속성'=''}) #혹은 find_all
+#select함수는 괄호 안에 바로 css선택자를 넣어 원하는 정보를 찾을 수 있다.
+
+
+#셀레니움 웹 크롤링
+#jupiter notebook 이용했다.
 # 1. 모듈 설치 필요
-# pip 명령어가 영 안먹어서 시간을 많이 소요했다
-# 여전히 해결됐는지는 의문?.?
-# 일단 구글 드라이브는 따로 검색하여 받아주었다. 경로 설정이 잘못되었는지 잘못된 경로라고 자꾸 떴음
+# pip 으로 설치가 필수적
+# 일단 구글 드라이브는 따로 검색하여 다운로드했다. 경로 설정이 잘못되었는지 잘못된 경로라고 자꾸 떴음
 # 나는 파이썬 3.10을 사용하는데 자꾸 쓰지도 않는 3.97을 이용하라는 것이었다
-# 문제 해결인지 모르겠지만 아나콘다 가상환경을 바꾸고 언어를 3.97로 변경해주었다
+# 아나콘다 가상환경을 바꾸고 언어를 3.97로 변경해주었다
 
 #어쨌든 주피터 노트북에서
 #첫번째로 모듈을 설치
 !pip install selenium
-!pip install webdriver-manager #이것도 속썩였다 web-driver-manager인지 _인지뭔지 일단 -한번으로 됐다
+!pip install webdriver-manager #web-driver-manager인지 _인지뭔지 일단 -한번으로 됐다
 #pip 명령어도 안먹어서 자꾸 instax? 정의되지 않은 변수라고 떠서 !를 앞에 넣어 강제로 실행해주었다
 
 #두번째는 모듈 불러오기
@@ -21,13 +31,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import pandas as pd
 import time
+from selenium webdriver.common.keys import keys #셀레니움에서 키 입력을 위해 필요한 구문
+
 
 #추가적 설치
 from selenium.common.exceptions import NoSuchElementException #오류나서 넣었다
-from selenium.webdriver.common.by import By #find_element_by 함수가 자꾸 error나서 불가피하게 find_element사용했다
+from selenium.webdriver.common.by import By #find_element_by 함수가 자꾸 error나서 불가피하게 find_element사용
 
 #세번째는 창 띄우고 주소 삽입하기
-#일단 driver 구문까지는 어떤 크롤링을 하든 쓰는 것 같으니 외워두도록 하자
+#인스타그램 크롤링을 해 보았다.
 driver=webdriver.Chrome(ChromeDriverManager().install())
 url="https://www.instagram.com"
 driver.get(url)
@@ -58,8 +70,11 @@ time.sleep(2) #대기
 from selenium.webdriver.common.by import By #find_element_by
 #변수 = driver.find_element(By.CSS_SELECTOR, "찾을경로")
 #등으로 사용할 수 있다. By.부분만 바꿔주면 다른 메서드로 사용가능
+#보통 x-path, css_selector 둘이 가장 많이 사용된다
 
-#다섯번째로, 검색해야함
+
+
+#다섯번째로, 검색
 word='서울근교카페' #원하는 검색에 넣고
 driver.get("https://www.instagram.com/explore/tags/"+word)
 time.sleep(5)
@@ -226,3 +241,6 @@ while True:
 
 #딕셔너리를 데이터프레임 형태로 정리하기
 #pd.DataFrame.from_dict()
+
+
+
