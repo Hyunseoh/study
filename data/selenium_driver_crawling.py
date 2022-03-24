@@ -29,14 +29,11 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
-import pandas as pd
+from package import pandas as pd
 import time
-from selenium webdriver.common.keys import keys #셀레니움에서 키 입력을 위해 필요한 구문
-
+.common.keys
 
 #추가적 설치
-from selenium.common.exceptions import NoSuchElementException #오류나서 넣었다
-from selenium.webdriver.common.by import By #find_element_by 함수가 자꾸 error나서 불가피하게 find_element사용
 
 #세번째는 창 띄우고 주소 삽입하기
 #인스타그램 크롤링을 해 보았다.
