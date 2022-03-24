@@ -240,4 +240,57 @@ while True:
 #pd.DataFrame.from_dict()
 
 
+# 1. 모듈설치
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from bs4 import BeautifulSoup
+import pandas as pd
+import time
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome(ChromeDriverManager().install())
+# 주소 부여
+# 1. 신문사 스크래핑
+url = "https://www.hankyung.com/all-news/economy"
+driver.get(url)
+html = driver.page_source
+soup = BeautifulSoup(html, 'html.parser')
+
+
+# 보기를 원하는 날짜 입력&원하는 뉴스 개수 입력
+def get_date(start, end, page):
+    return "https://www.hankyung.com/all-news/economy?sdate={}&edate={}&page={}".format(start, end, page)
+
+
+start, end = input("yyyy.mm.dd-yyyy.mm.dd 시작과 종료날짜 입력: ").split('-')
+page_num = int(input("몇 페이지까지 출력하시겠습니까?: "))
+total_news = {}
+titleList = [];
+linkList = [];
+contentList = [];
+for page in range(1, page_num + 1):
+    # 1.검색 페이지 이동
+    url = url = get_date(start, end, page)
+    driver.get(url)
+    # 페이지 로딩 시간이 필요하므로 2초 딜레이
+    time.sleep(2)
+    print("현재 스크래핑 작업중인 페이지 번호 : ", page)
+    # 2.로드된 페이지의 html 태그 읽어오기
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+
+    # 현재 페이지의 기사들 가져오기
+    news_list = soup.select('ul.article_list>li')  # 페이지 내 기사들
+
+    for i in range(len(news_list)):
+        title = soup.select('ul.article_list> li> div > h3.tit')[i].text  # 기사 제목과 링크 리스트
+        link = soup.select('ul.article_list> li> div > h3.tit> a')[i].attrs['href']
+        content = soup.select('ul.article_list> li> div >p.read')[i].text  # 기사 내용 리스트
+        titleList.append(title);
+        linkList.append(link);
+        contentList.append(content)
+news = list(zip(titleList, linkList, contentList))
+df = pd.DataFrame(news)
+df.to_excel("economicnews.xlsx", index=False)
 
