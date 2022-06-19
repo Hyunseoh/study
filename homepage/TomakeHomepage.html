@@ -82,7 +82,16 @@ onclick="함수이름();" 으로 정의 후 script상에서 해당 함수를 정
 
 </div>
 
-
-
+<!-- form 에서 정보 넘기기 -->
+<div><form method = "get" action=''>
+     {% csrf_token %} 
+    <input type name id value >
+    </form></div>
+<!-- csrf_token은 필수는 아니며, method는 get방식과 post방식이 있음 
+action은 폼을 전송할 주소(서버 쪽 스크립트 파일/혹은 폼/...)
+input 태그로 사용자로부터 값을 받아올 수 있음(날짜참조, 로그인정보, 이미지 클릭 등) -->
+    
+    
+    
 </body>
 </html>
